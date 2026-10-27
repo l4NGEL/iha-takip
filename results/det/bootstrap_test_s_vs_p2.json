@@ -1,0 +1,26 @@
+{
+  "a": "results\\det\\s_test.npz",
+  "b": "results\\det\\s-p2_test.npz",
+  "split": "test",
+  "n_boot": 1000,
+  "all": {
+    "AP_a": 0.8578,
+    "AP_b": 0.8572,
+    "diff_b_minus_a": -0.0007,
+    "ci95": [
+      -0.008,
+      0.0069
+    ],
+    "n_sequences": 120
+  },
+  "size<16": {
+    "AP_a": 0.7027,
+    "AP_b": 0.7003,
+    "diff_b_minus_a": -0.0024,
+    "ci95": [
+      -0.0373,
+      0.0316
+    ],
+    "n_sequences": 120
+  }
+}

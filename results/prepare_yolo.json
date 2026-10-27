@@ -1,0 +1,16 @@
+{
+  "train": {
+    "present": 20916,
+    "absent": 4984,
+    "skipped_invalid": 179,
+    "sequences": 200
+  },
+  "val": {
+    "present": 4632,
+    "absent": 109,
+    "skipped_invalid": 73,
+    "sequences": 90
+  },
+  "stride": 10,
+  "val_stride": 20
+}

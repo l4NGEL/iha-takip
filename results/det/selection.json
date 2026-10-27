@@ -1,0 +1,10 @@
+{
+  "selected": "s-p2",
+  "rule": "val AP50 (her 5. kare), onceden sabit",
+  "val_AP50": {
+    "s": 0.8654,
+    "s-p2": 0.8676
+  },
+  "bootstrap": "results/det/bootstrap_val_s_vs_p2.json",
+  "note": "fark CI icinde 0 iceriyor; esit sayilir"
+}

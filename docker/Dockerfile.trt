@@ -1,0 +1,12 @@
+# TensorRT + CUDA + OpenCV gelistirme imaji (x86_64, Linux).
+# Jetson icin taban imaj nvcr.io/nvidia/l4t-tensorrt olur; kod ayni, CMAKE_CUDA_ARCHITECTURES=87.
+FROM nvcr.io/nvidia/tensorrt:25.01-py3
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        cmake ninja-build g++ \
+        libeigen3-dev libgtest-dev \
+        libopencv-dev \
+        gstreamer1.0-plugins-base gstreamer1.0-plugins-good gstreamer1.0-libav \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /work

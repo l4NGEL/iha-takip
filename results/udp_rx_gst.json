@@ -1,0 +1,19 @@
+{
+  "received": 994,
+  "rejected": 0,
+  "valid_target": 244,
+  "seq_gaps": 0,
+  "latency_us_p50": 8943,
+  "latency_us_max": 21406,
+  "last": {
+    "valid": false,
+    "measured": false,
+    "seq": 993,
+    "stamp_us": 66369084411,
+    "track_id": -1,
+    "az_deg": 0.0,
+    "el_deg": 0.0,
+    "score": 0.0,
+    "latency_us": 9103
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "frames": 200,
+  "top1_iou_mean": 0.9877,
+  "top1_iou_min": 0.9682,
+  "top1_iou_ge_0.9": 1.0,
+  "score_absdiff_mean": 0.0007,
+  "score_absdiff_max": 0.0045,
+  "same_decision_at_thr_0.415": 1.0
+}

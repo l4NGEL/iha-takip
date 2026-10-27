@@ -1,0 +1,39 @@
+# Veri setleri (scripts/ ile indirilir/donusturulur)
+data/
+
+# Model agirliklari, ONNX ve TensorRT motorlari
+checkpoints/
+*.engine
+*.onnx
+
+# Egitim ciktilari
+runs/
+
+# Derleme
+build/
+cpp/build*/
+
+# Ortam
+.venv/
+__pycache__/
+*.egg-info/
+.pytest_cache/
+.claude/
+
+# Buyuk ara ciktilar
+results/**/overlays/
+results/*.log
+
+# Buyuk ara ciktilar: kare basina tespit/takip dokumleri ve tahmin dizileri
+# (yeniden uretilir; ozetler results/**/*.json olarak tutulur)
+results/**/*.npz
+results/**/*.bin
+results/trk/*/
+results/parity/*/
+results/gimbal/*.csv
+results/*.log
+results/det/*.log
+results/trk/*.log
+
+# Ultralytics agirliklari (otomatik indirilir)
+*.pt

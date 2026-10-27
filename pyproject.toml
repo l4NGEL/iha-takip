@@ -1,0 +1,21 @@
+[project]
+name = "iha-takip"
+version = "0.1.0"
+description = "Termal (IR) kamerada kucuk IHA tespiti ve takibi: YOLO egitimi, TensorRT, C++ takip hatti, gimbal aci hatasi"
+requires-python = ">=3.10"
+dependencies = [
+  "torch>=2.1",
+  "ultralytics==8.4.9",
+  "opencv-python",
+  "numpy",
+  "onnx",
+  "huggingface_hub",
+  "matplotlib",
+]
+
+[project.optional-dependencies]
+dev = ["pytest"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]

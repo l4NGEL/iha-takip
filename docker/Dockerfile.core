@@ -1,0 +1,6 @@
+# GPU'suz cekirdek: takip, aci hatasi, PID, protokol, testler (CI ile ayni).
+FROM ubuntu:24.04
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        cmake ninja-build g++ libeigen3-dev libgtest-dev \
+    && rm -rf /var/lib/apt/lists/*
+WORKDIR /work

@@ -1,0 +1,67 @@
+{
+  "split": "test",
+  "pred": "results\\det\\s-p2_test.npz",
+  "iou": 0.5,
+  "threshold": 0.414794921875,
+  "threshold_source": "results\\det\\s-p2_val.json",
+  "groups": {
+    "all": {
+      "n_frames": 127028,
+      "AP50": 0.8572,
+      "precision": 0.9433,
+      "recall": 0.7962
+    },
+    "size<16": {
+      "n_frames": 36986,
+      "AP50": 0.7003,
+      "precision": 0.8528,
+      "recall": 0.6038
+    },
+    "size16-32": {
+      "n_frames": 27127,
+      "AP50": 0.8883,
+      "precision": 0.9635,
+      "recall": 0.8444
+    },
+    "size>=32": {
+      "n_frames": 62915,
+      "AP50": 0.9193,
+      "precision": 0.9794,
+      "recall": 0.8885
+    },
+    "TS": {
+      "n_frames": 30538,
+      "AP50": 0.7766,
+      "precision": 0.8904,
+      "recall": 0.6762
+    },
+    "FM": {
+      "n_frames": 14323,
+      "AP50": 0.637,
+      "precision": 0.8515,
+      "recall": 0.5555
+    },
+    "DBC": {
+      "n_frames": 8609,
+      "AP50": 0.6864,
+      "precision": 0.8369,
+      "recall": 0.5887
+    },
+    "SV": {
+      "n_frames": 810,
+      "AP50": 0.909,
+      "precision": 0.9608,
+      "recall": 0.8469
+    },
+    "OC": {
+      "n_frames": 707,
+      "AP50": 0.01,
+      "precision": 0.4667,
+      "recall": 0.0099
+    }
+  },
+  "absent": {
+    "n_frames": 2622,
+    "false_alarm_rate": 0.0683
+  }
+}

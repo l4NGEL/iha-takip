@@ -1,0 +1,124 @@
+{
+  "split": "val",
+  "rule": "en yuksek val SA (dizi ortalamasi)",
+  "selected": {
+    "name": "bt_h0.3_m1_c5 [--lock-yield 1]",
+    "flags": "--high-thr 0.3 --new-thr 0.400 --low-thr 0.1 --min-hits 1 --coast 5 --lock-yield 1",
+    "SA": 0.7263,
+    "SA_frame": 0.6956,
+    "mean_iou_present": 0.6911,
+    "absent_correct": 0.8937,
+    "output_rate": 0.9056
+  },
+  "baseline_top1": null,
+  "all": [
+    {
+      "name": "bt_h0.3_m1_c5 [--lock-yield 1]",
+      "flags": "--high-thr 0.3 --new-thr 0.400 --low-thr 0.1 --min-hits 1 --coast 5 --lock-yield 1",
+      "SA": 0.7263,
+      "SA_frame": 0.6956,
+      "mean_iou_present": 0.6911,
+      "absent_correct": 0.8937,
+      "output_rate": 0.9056
+    },
+    {
+      "name": "bt_h0.3_m1_c15 [--lock-yield 1]",
+      "flags": "--high-thr 0.3 --new-thr 0.400 --low-thr 0.1 --min-hits 1 --coast 15 --lock-yield 1",
+      "SA": 0.7259,
+      "SA_frame": 0.6956,
+      "mean_iou_present": 0.6935,
+      "absent_correct": 0.7883,
+      "output_rate": 0.9213
+    },
+    {
+      "name": "bt_h0.415_m1_c5 [--lock-yield 1]",
+      "flags": "--high-thr 0.415 --new-thr 0.515 --low-thr 0.1 --min-hits 1 --coast 5 --lock-yield 1",
+      "SA": 0.7247,
+      "SA_frame": 0.6935,
+      "mean_iou_present": 0.6883,
+      "absent_correct": 0.9258,
+      "output_rate": 0.8921
+    },
+    {
+      "name": "bt_h0.415_m1_c15 [--lock-yield 1]",
+      "flags": "--high-thr 0.415 --new-thr 0.515 --low-thr 0.1 --min-hits 1 --coast 15 --lock-yield 1",
+      "SA": 0.7244,
+      "SA_frame": 0.6936,
+      "mean_iou_present": 0.6904,
+      "absent_correct": 0.8367,
+      "output_rate": 0.9072
+    },
+    {
+      "name": "bt_h0.3_m1_c30 [--lock-yield 1]",
+      "flags": "--high-thr 0.3 --new-thr 0.400 --low-thr 0.1 --min-hits 1 --coast 30 --lock-yield 1",
+      "SA": 0.724,
+      "SA_frame": 0.6933,
+      "mean_iou_present": 0.6943,
+      "absent_correct": 0.6504,
+      "output_rate": 0.9337
+    },
+    {
+      "name": "bt_h0.415_m1_c30 [--lock-yield 1]",
+      "flags": "--high-thr 0.415 --new-thr 0.515 --low-thr 0.1 --min-hits 1 --coast 30 --lock-yield 1",
+      "SA": 0.7226,
+      "SA_frame": 0.6915,
+      "mean_iou_present": 0.691,
+      "absent_correct": 0.7155,
+      "output_rate": 0.9197
+    },
+    {
+      "name": "bt_h0.3_m2_c5 [--lock-yield 1]",
+      "flags": "--high-thr 0.3 --new-thr 0.400 --low-thr 0.1 --min-hits 2 --coast 5 --lock-yield 1",
+      "SA": 0.7072,
+      "SA_frame": 0.6772,
+      "mean_iou_present": 0.6718,
+      "absent_correct": 0.9181,
+      "output_rate": 0.8968
+    },
+    {
+      "name": "bt_h0.3_m2_c15 [--lock-yield 1]",
+      "flags": "--high-thr 0.3 --new-thr 0.400 --low-thr 0.1 --min-hits 2 --coast 15 --lock-yield 1",
+      "SA": 0.7068,
+      "SA_frame": 0.6773,
+      "mean_iou_present": 0.6739,
+      "absent_correct": 0.8281,
+      "output_rate": 0.9123
+    },
+    {
+      "name": "bt_h0.415_m2_c5 [--lock-yield 1]",
+      "flags": "--high-thr 0.415 --new-thr 0.515 --low-thr 0.1 --min-hits 2 --coast 5 --lock-yield 1",
+      "SA": 0.7053,
+      "SA_frame": 0.6748,
+      "mean_iou_present": 0.6687,
+      "absent_correct": 0.9483,
+      "output_rate": 0.8843
+    },
+    {
+      "name": "bt_h0.3_m2_c30 [--lock-yield 1]",
+      "flags": "--high-thr 0.3 --new-thr 0.400 --low-thr 0.1 --min-hits 2 --coast 30 --lock-yield 1",
+      "SA": 0.705,
+      "SA_frame": 0.6753,
+      "mean_iou_present": 0.6747,
+      "absent_correct": 0.7007,
+      "output_rate": 0.9251
+    },
+    {
+      "name": "bt_h0.415_m2_c15 [--lock-yield 1]",
+      "flags": "--high-thr 0.415 --new-thr 0.515 --low-thr 0.1 --min-hits 2 --coast 15 --lock-yield 1",
+      "SA": 0.7049,
+      "SA_frame": 0.6748,
+      "mean_iou_present": 0.6704,
+      "absent_correct": 0.8702,
+      "output_rate": 0.8981
+    },
+    {
+      "name": "bt_h0.415_m2_c30 [--lock-yield 1]",
+      "flags": "--high-thr 0.415 --new-thr 0.515 --low-thr 0.1 --min-hits 2 --coast 30 --lock-yield 1",
+      "SA": 0.7033,
+      "SA_frame": 0.673,
+      "mean_iou_present": 0.6709,
+      "absent_correct": 0.7672,
+      "output_rate": 0.9095
+    }
+  ]
+}

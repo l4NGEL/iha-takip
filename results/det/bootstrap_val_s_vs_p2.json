@@ -1,0 +1,26 @@
+{
+  "a": "results\\det\\s_val.npz",
+  "b": "results\\det\\s-p2_val.npz",
+  "split": "val",
+  "n_boot": 1000,
+  "all": {
+    "AP_a": 0.8654,
+    "AP_b": 0.8676,
+    "diff_b_minus_a": 0.0022,
+    "ci95": [
+      -0.0022,
+      0.0075
+    ],
+    "n_sequences": 90
+  },
+  "size<16": {
+    "AP_a": 0.5554,
+    "AP_b": 0.5727,
+    "diff_b_minus_a": 0.0173,
+    "ci95": [
+      -0.0069,
+      0.0426
+    ],
+    "n_sequences": 90
+  }
+}

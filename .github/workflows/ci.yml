@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  core-cpp:
+    # GPU'suz cekirdek: takip, aci hatasi, PID, protokol, UDP; -Werror ile.
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Bagimliliklar
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends cmake ninja-build g++ libeigen3-dev libgtest-dev
+      - name: Derle
+        run: cmake -S cpp -B build -G Ninja -DIHA_WITH_TRT=OFF && cmake --build build
+      - name: Test
+        run: ctest --test-dir build --output-on-failure
+      - name: Gimbal benzetimi (duman testi)
+        run: ./build/gimbal_sim --seeds 2
+
+  core-cpp-sanitizers:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Bagimliliklar
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends cmake ninja-build g++ libeigen3-dev libgtest-dev
+      - name: ASan + UBSan
+        run: |
+          cmake -S cpp -B build -G Ninja -DIHA_WITH_TRT=OFF -DCMAKE_BUILD_TYPE=Debug \
+            -DCMAKE_CXX_FLAGS="-fsanitize=address,undefined -fno-omit-frame-pointer -fno-sanitize-recover=all"
+          cmake --build build
+          ctest --test-dir build --output-on-failure
+
+  python:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Test
+        run: pip install numpy pytest && python -m pytest -q

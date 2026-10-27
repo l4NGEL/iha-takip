@@ -1,0 +1,8 @@
+{
+  "latency_ms": 15.000000, "p_miss": 0.200000, "noise_px": 1.000000, "seeds": 20,
+  "raw": {"rms_deg": 1.7766, "rms_deg_p05": 1.7350, "rms_deg_p95": 1.8650, "p95_err_deg": 3.1585, "time_within_0.5deg": 0.1041, "time_in_fov": 1.0000, "lost_events": 0.00},
+  "sticky_nocmc": {"rms_deg": 28.2040, "rms_deg_p05": 20.0966, "rms_deg_p95": 37.6586, "p95_err_deg": 39.7346, "time_within_0.5deg": 0.0011, "time_in_fov": 0.0959, "lost_events": 4.00},
+  "track_nocmc": {"rms_deg": 1.4423, "rms_deg_p05": 1.4244, "rms_deg_p95": 1.4718, "p95_err_deg": 2.4664, "time_within_0.5deg": 0.1403, "time_in_fov": 1.0000, "lost_events": 0.00},
+  "track": {"rms_deg": 1.4672, "rms_deg_p05": 1.4527, "rms_deg_p95": 1.4969, "p95_err_deg": 2.5064, "time_within_0.5deg": 0.1335, "time_in_fov": 1.0000, "lost_events": 0.00},
+  "lead": {"rms_deg": 0.7520, "rms_deg_p05": 0.7144, "rms_deg_p95": 0.8223, "p95_err_deg": 1.0711, "time_within_0.5deg": 0.3390, "time_in_fov": 1.0000, "lost_events": 0.00}
+}

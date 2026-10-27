@@ -1,0 +1,26 @@
+{
+  "rule": "en yuksek val SA (dizi ortalamasi); test bu secimden sonra bir kez kosulur",
+  "selected": {
+    "name": "bt_h0.3_m1_c5 [--lock-yield 1]",
+    "flags": "--high-thr 0.3 --new-thr 0.400 --low-thr 0.1 --min-hits 1 --coast 5 --lock-yield 1",
+    "SA": 0.7263,
+    "SA_frame": 0.6956,
+    "mean_iou_present": 0.6911,
+    "absent_correct": 0.8937,
+    "output_rate": 0.9056
+  },
+  "baseline_top1": {
+    "name": "top1",
+    "flags": "--mode top1 --top1-thr 0.415",
+    "SA": 0.7094,
+    "SA_frame": 0.6753,
+    "mean_iou_present": 0.6686,
+    "absent_correct": 0.9756,
+    "output_rate": 0.852
+  },
+  "grids": [
+    "results/trk/tune_val_sticky_lock.json (ilk izgara; coast>0 satirlari yapiskan kilitle)",
+    "results/trk/tune_val_yield.json (yol veren kilit)"
+  ],
+  "note": "coast>0 yapiskan kilitte SA 0.50-0.63 (kilit parazitte kaliyordu); yol veren kilit ile 0.70-0.726"
+}
