@@ -1,0 +1,43 @@
+{
+  "split": "val",
+  "rule": "en yuksek val SA (dizi ortalamasi)",
+  "selected": {
+    "name": "bt_h0.3_m1_c5 [--lock-yield 1 --out-score 0.5 --motion-dir results/trk/motion_val]",
+    "flags": "--high-thr 0.3 --new-thr 0.400 --low-thr 0.1 --min-hits 1 --coast 5 --lock-yield 1 --out-score 0.5 --motion-dir results/trk/motion_val",
+    "SA": 0.7145,
+    "SA_frame": 0.6792,
+    "mean_iou_present": 0.6729,
+    "absent_correct": 0.9588,
+    "output_rate": 0.8556
+  },
+  "baseline_top1": null,
+  "all": [
+    {
+      "name": "bt_h0.3_m1_c5 [--lock-yield 1 --out-score 0.5 --motion-dir results/trk/motion_val]",
+      "flags": "--high-thr 0.3 --new-thr 0.400 --low-thr 0.1 --min-hits 1 --coast 5 --lock-yield 1 --out-score 0.5 --motion-dir results/trk/motion_val",
+      "SA": 0.7145,
+      "SA_frame": 0.6792,
+      "mean_iou_present": 0.6729,
+      "absent_correct": 0.9588,
+      "output_rate": 0.8556
+    },
+    {
+      "name": "bt_h0.3_m1_c15 [--lock-yield 1 --out-score 0.5 --motion-dir results/trk/motion_val]",
+      "flags": "--high-thr 0.3 --new-thr 0.400 --low-thr 0.1 --min-hits 1 --coast 15 --lock-yield 1 --out-score 0.5 --motion-dir results/trk/motion_val",
+      "SA": 0.7139,
+      "SA_frame": 0.6789,
+      "mean_iou_present": 0.6739,
+      "absent_correct": 0.8989,
+      "output_rate": 0.8601
+    },
+    {
+      "name": "bt_h0.3_m1_c30 [--lock-yield 1 --out-score 0.5 --motion-dir results/trk/motion_val]",
+      "flags": "--high-thr 0.3 --new-thr 0.400 --low-thr 0.1 --min-hits 1 --coast 30 --lock-yield 1 --out-score 0.5 --motion-dir results/trk/motion_val",
+      "SA": 0.7126,
+      "SA_frame": 0.6775,
+      "mean_iou_present": 0.6741,
+      "absent_correct": 0.8247,
+      "output_rate": 0.8635
+    }
+  ]
+}

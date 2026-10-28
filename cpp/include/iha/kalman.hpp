@@ -31,11 +31,10 @@ public:
 
     void predict();
     void update(const Box& meas);
-    // Kamera hareketi telafisi: goruntu duzleminde tum durumu (dx, dy) kaydirir.
-    void shift(float dx, float dy) {
-        x_(0) += dx;
-        x_(1) += dy;
-    }
+    // Kamera hareketi telafisi: durumu onceki kare -> simdiki kare afin eslemesiyle tasir.
+    // Merkez ve hiz L ile, boyut ve boyut hizi izotrop olcekle donusur; kovaryans J P J^T.
+    void warp(const Affine2D& A);
+    void shift(float dx, float dy) { warp(Affine2D::translation(dx, dy)); }
 
     Box box() const;
     float vx() const { return x_(4); }

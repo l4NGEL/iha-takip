@@ -1,0 +1,67 @@
+{
+  "split": "val",
+  "pred": "results\\det\\s-p2_val_im800.npz",
+  "iou": 0.5,
+  "threshold": 0.443603515625,
+  "threshold_source": "bu kumede en iyi F1",
+  "groups": {
+    "all": {
+      "n_frames": 18515,
+      "AP50": 0.8696,
+      "precision": 0.9569,
+      "recall": 0.8335
+    },
+    "size<16": {
+      "n_frames": 4961,
+      "AP50": 0.5748,
+      "precision": 0.8632,
+      "recall": 0.514
+    },
+    "size16-32": {
+      "n_frames": 3190,
+      "AP50": 0.9077,
+      "precision": 0.9756,
+      "recall": 0.8768
+    },
+    "size>=32": {
+      "n_frames": 10364,
+      "AP50": 0.985,
+      "precision": 0.9793,
+      "recall": 0.9731
+    },
+    "TS": {
+      "n_frames": 2861,
+      "AP50": 0.6626,
+      "precision": 0.8777,
+      "recall": 0.5945
+    },
+    "FM": {
+      "n_frames": 584,
+      "AP50": 0.553,
+      "precision": 0.8487,
+      "recall": 0.4897
+    },
+    "DBC": {
+      "n_frames": 2294,
+      "AP50": 0.3761,
+      "precision": 0.7899,
+      "recall": 0.3474
+    },
+    "SV": {
+      "n_frames": 20,
+      "AP50": 0.5,
+      "precision": 1.0,
+      "recall": 0.5
+    },
+    "OC": {
+      "n_frames": 2,
+      "AP50": 0.5,
+      "precision": 1.0,
+      "recall": 0.5
+    }
+  },
+  "absent": {
+    "n_frames": 417,
+    "false_alarm_rate": 0.0192
+  }
+}

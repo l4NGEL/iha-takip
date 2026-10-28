@@ -27,6 +27,9 @@ struct TrackerParams {
     // takip varsa kilit ona gecer. Kapaliyken kilit coast_output kare boyunca korunur;
     // kilit bir parazite takildiysa gercek hedef o sure boyunca kacirilir.
     bool lock_yields_to_measured = true;
+    // Kilitli takibin skor EMA'si bunun altindaysa hedef disari verilmez (kilit korunur).
+    // Hedefsiz karelerde yanlis cikisi azaltmak icin; 0 = kapi yok.
+    float output_min_score = 0.f;
     KalmanParams kalman;
 };
 
@@ -69,6 +72,8 @@ public:
     // doner ve takip kopabilir; gimbal_sim'de bu tek basina donguyu bozmadi, yapiskan kilitle
     // birlesince bozdu (bkz. lock_yields_to_measured).
     void compensateCameraMotion(float dx, float dy);
+    // Genel hal: onceki kare -> simdiki kare afin eslemesi (goruntuden kuresel hareket kestirimi).
+    void compensateCameraMotion(const Affine2D& A);
     const std::vector<Track>& tracks() const { return tracks_; }
 
     // Kilitli hedef: kilitli takip yasiyor ve en fazla coast_output karedir

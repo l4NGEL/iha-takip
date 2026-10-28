@@ -29,6 +29,7 @@ int main(int argc, char** argv) try {
     const std::string mode = a.str("mode", "bytetrack");
     const float top1_thr = a.f("top1-thr", 0.415f);
     const TrackerParams tp = trackerParamsFromArgs(a);
+    const std::string motion_dir = a.str("motion-dir", "");  // goruntuden kamera hareketi (motion_dump)
     const CameraModel cam = CameraModel::fromHfov(640, 512, a.f("hfov", 30.f));
     if (mode != "bytetrack" && mode != "top1") throw std::invalid_argument("--mode bytetrack|top1");
 
@@ -41,6 +42,8 @@ int main(int argc, char** argv) try {
         const fs::path det_path = fs::path(dets_dir) / (name + ".csv");
         if (!fs::exists(det_path)) throw std::runtime_error("tespit dosyasi yok: " + det_path.string());
         const auto dets = readDetectionsCsv(det_path.string());
+        std::map<int, Affine2D> motion;
+        if (!motion_dir.empty()) motion = readMotionCsv((fs::path(motion_dir) / (name + ".csv")).string());
         const int n = countFrames(seq_dir);
 
         ByteTracker tracker(tp);
@@ -56,6 +59,7 @@ int main(int argc, char** argv) try {
                     if (x.score >= top1_thr && (!best || x.score > best->score)) best = &x;
                 if (best) tgt = TargetOutput{0, best->box, best->score, true, 0.f, 0.f};
             } else {
+                if (auto m = motion.find(f); m != motion.end()) tracker.compensateCameraMotion(m->second);
                 tracker.update(d);
                 tgt = tracker.target();
             }

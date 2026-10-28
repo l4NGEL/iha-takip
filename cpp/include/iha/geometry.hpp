@@ -28,4 +28,19 @@ float iou(const Box& a, const Box& b);
 // DIoU yakin olan adayi uzak olandan hala ayirabilir.
 float diou(const Box& a, const Box& b);
 
+// Goruntu duzleminde 2B afin donusum: p' = L p + t,  L = [a b; c d].
+// Kamera hareketi telafisinde onceki kare -> simdiki kare eslemesi icin kullanilir.
+struct Affine2D {
+    float a = 1.f, b = 0.f, tx = 0.f;
+    float c = 0.f, d = 1.f, ty = 0.f;
+
+    static Affine2D translation(float dx, float dy) { return {1.f, 0.f, dx, 0.f, 1.f, dy}; }
+    void apply(float x, float y, float& ox, float& oy) const {
+        ox = a * x + b * y + tx;
+        oy = c * x + d * y + ty;
+    }
+    // Izotrop olcek (benzerlik donusumunde sqrt(|det L|)).
+    float scale() const;
+};
+
 }  // namespace iha

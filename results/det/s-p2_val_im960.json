@@ -1,0 +1,67 @@
+{
+  "split": "val",
+  "pred": "results\\det\\s-p2_val_im960.npz",
+  "iou": 0.5,
+  "threshold": 0.5185546875,
+  "threshold_source": "bu kumede en iyi F1",
+  "groups": {
+    "all": {
+      "n_frames": 18515,
+      "AP50": 0.864,
+      "precision": 0.9483,
+      "recall": 0.8191
+    },
+    "size<16": {
+      "n_frames": 4961,
+      "AP50": 0.5717,
+      "precision": 0.8724,
+      "recall": 0.5029
+    },
+    "size16-32": {
+      "n_frames": 3190,
+      "AP50": 0.9049,
+      "precision": 0.9482,
+      "recall": 0.8724
+    },
+    "size>=32": {
+      "n_frames": 10364,
+      "AP50": 0.9801,
+      "precision": 0.9734,
+      "recall": 0.9541
+    },
+    "TS": {
+      "n_frames": 2861,
+      "AP50": 0.6592,
+      "precision": 0.8492,
+      "recall": 0.5942
+    },
+    "FM": {
+      "n_frames": 584,
+      "AP50": 0.5314,
+      "precision": 0.907,
+      "recall": 0.4675
+    },
+    "DBC": {
+      "n_frames": 2294,
+      "AP50": 0.3694,
+      "precision": 0.7514,
+      "recall": 0.3413
+    },
+    "SV": {
+      "n_frames": 20,
+      "AP50": 0.5,
+      "precision": 1.0,
+      "recall": 0.5
+    },
+    "OC": {
+      "n_frames": 2,
+      "AP50": 0.5,
+      "precision": 1.0,
+      "recall": 0.5
+    }
+  },
+  "absent": {
+    "n_frames": 417,
+    "false_alarm_rate": 0.0911
+  }
+}

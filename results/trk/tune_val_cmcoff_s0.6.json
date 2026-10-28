@@ -1,0 +1,43 @@
+{
+  "split": "val",
+  "rule": "en yuksek val SA (dizi ortalamasi)",
+  "selected": {
+    "name": "bt_h0.3_m1_c5 [--lock-yield 1 --out-score 0.6]",
+    "flags": "--high-thr 0.3 --new-thr 0.400 --low-thr 0.1 --min-hits 1 --coast 5 --lock-yield 1 --out-score 0.6",
+    "SA": 0.6995,
+    "SA_frame": 0.6604,
+    "mean_iou_present": 0.6532,
+    "absent_correct": 0.9761,
+    "output_rate": 0.8251
+  },
+  "baseline_top1": null,
+  "all": [
+    {
+      "name": "bt_h0.3_m1_c5 [--lock-yield 1 --out-score 0.6]",
+      "flags": "--high-thr 0.3 --new-thr 0.400 --low-thr 0.1 --min-hits 1 --coast 5 --lock-yield 1 --out-score 0.6",
+      "SA": 0.6995,
+      "SA_frame": 0.6604,
+      "mean_iou_present": 0.6532,
+      "absent_correct": 0.9761,
+      "output_rate": 0.8251
+    },
+    {
+      "name": "bt_h0.3_m1_c15 [--lock-yield 1 --out-score 0.6]",
+      "flags": "--high-thr 0.3 --new-thr 0.400 --low-thr 0.1 --min-hits 1 --coast 15 --lock-yield 1 --out-score 0.6",
+      "SA": 0.6988,
+      "SA_frame": 0.6599,
+      "mean_iou_present": 0.6536,
+      "absent_correct": 0.9397,
+      "output_rate": 0.8271
+    },
+    {
+      "name": "bt_h0.3_m1_c30 [--lock-yield 1 --out-score 0.6]",
+      "flags": "--high-thr 0.3 --new-thr 0.400 --low-thr 0.1 --min-hits 1 --coast 30 --lock-yield 1 --out-score 0.6",
+      "SA": 0.6979,
+      "SA_frame": 0.659,
+      "mean_iou_present": 0.6537,
+      "absent_correct": 0.8922,
+      "output_rate": 0.8284
+    }
+  ]
+}

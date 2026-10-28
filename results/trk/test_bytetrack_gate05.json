@@ -1,0 +1,35 @@
+{
+  "pred": "results\\trk\\test_bytetrack_gate05",
+  "split": "test",
+  "n_sequences": 120,
+  "n_frames": 129650,
+  "SA_mean_of_sequences": 0.6475,
+  "SA_frame_level": 0.6251,
+  "success_iou50_on_present": 0.7915,
+  "mean_iou_on_present": 0.6194,
+  "absent_frames": 2622,
+  "absent_correct_rate": 0.9012,
+  "output_rate_on_present": 0.8176,
+  "attributes": {
+    "TS": {
+      "n_frames": 30538,
+      "mean_iou": 0.5172
+    },
+    "FM": {
+      "n_frames": 14323,
+      "mean_iou": 0.403
+    },
+    "DBC": {
+      "n_frames": 8609,
+      "mean_iou": 0.4361
+    },
+    "SV": {
+      "n_frames": 810,
+      "mean_iou": 0.6731
+    },
+    "OC": {
+      "n_frames": 707,
+      "mean_iou": 0.0147
+    }
+  }
+}

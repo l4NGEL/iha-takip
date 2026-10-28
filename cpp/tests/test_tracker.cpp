@@ -149,3 +149,35 @@ TEST(Tracker, CoastingLockYieldsToMeasuredTrack) {
     EXPECT_EQ(sticky.target()->track_id, 1);
     EXPECT_FALSE(sticky.target()->measured);
 }
+
+TEST(Tracker, OutputScoreGateHidesWeakTargetButKeepsLock) {
+    TrackerParams p;
+    p.min_hits = 1;
+    p.output_min_score = 0.5f;
+    p.new_track_thr = 0.4f;
+    // Zayif ama yeni takip esigini gecen hedef: takip var, cikis yok.
+    ByteTracker weak(p);
+    for (int t = 0; t < 10; ++t) weak.update({det(100, 100, 0.42f)});
+    EXPECT_EQ(weak.tracks().size(), 1u);
+    EXPECT_FALSE(weak.target().has_value());
+    // Skor yukselince ayni takip disari verilir.
+    for (int t = 0; t < 20; ++t) weak.update({det(100, 100, 0.9f)});
+    ASSERT_TRUE(weak.target().has_value());
+    EXPECT_EQ(weak.target()->track_id, 1);
+}
+
+TEST(Tracker, AffineCompensationRotatesStateAboutOrigin) {
+    // Kamera 90 derece donmus gibi: (x, y) -> (-y, x) + (200, 0). Merkez ve hiz birlikte donmeli.
+    TrackerParams p;
+    p.min_hits = 1;
+    ByteTracker tr(p);
+    for (int t = 0; t < 15; ++t) tr.update({det(50.f + 2.f * static_cast<float>(t), 20, 0.9f)});
+    const float vx0 = tr.tracks()[0].kf.vx();
+    iha::Affine2D A{0.f, -1.f, 200.f, 1.f, 0.f, 0.f};
+    tr.compensateCameraMotion(A);
+    const auto& kf = tr.tracks()[0].kf;
+    EXPECT_NEAR(kf.box().cx(), -20.f + 200.f, 1e-3f);
+    EXPECT_NEAR(kf.box().cy(), 50.f + 2.f * 14.f, 1e-3f);
+    EXPECT_NEAR(kf.vx(), 0.f, 1e-4f);
+    EXPECT_NEAR(kf.vy(), vx0, 1e-4f);
+}

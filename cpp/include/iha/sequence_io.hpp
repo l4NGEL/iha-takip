@@ -20,6 +20,10 @@ int countFrames(const std::string& seq_dir);
 // Tespit dokumu: "frame,x,y,w,h,score" (frame 0 tabanli). Hedefsiz kareler satir icermez.
 std::map<int, Detections> readDetectionsCsv(const std::string& path);
 
+// Kare arasi kamera hareketi dokumu (motion_dump): "frame,valid,a,b,tx,c,d,ty,...".
+// Yalniz gecerli kestirimler doner; satir f, kare f-1 -> f eslemesidir.
+std::map<int, Affine2D> readMotionCsv(const std::string& path);
+
 class DetectionCsvWriter {
 public:
     explicit DetectionCsvWriter(const std::string& path);

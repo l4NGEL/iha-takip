@@ -18,13 +18,19 @@
 #include <memory>
 #include <mutex>
 #include <optional>
+#include <future>
 #include <thread>
 
 #include <opencv2/imgcodecs.hpp>
+#include <opencv2/core/utility.hpp>
+#include <opencv2/imgproc.hpp>
+
+#include <cuda_runtime.h>
 #include <opencv2/videoio.hpp>
 
 #include "iha/args.hpp"
 #include "iha/gimbal.hpp"
+#include "iha/global_motion.hpp"
 #include "iha/latency.hpp"
 #include "iha/pipeline_config.hpp"
 #include "iha/protocol.hpp"
@@ -85,14 +91,32 @@ struct Pipeline {
     uint32_t seq = 0;
     double lead_frames = 0;
     bool measure = true;
+    std::unique_ptr<GlobalMotionEstimator> gme;  // --cmc: goruntuden kamera hareketi telafisi
+    std::vector<Box> prev_boxes;                 // bir onceki karenin guclu tespitleri (maske)
 
     Pipeline(TrtDetector& d, const TrackerParams& tp, const CameraModel& c) : det(d), tracker(tp), cam(c) {}
 
     // stamp_us: karenin elde edildigi an (okuma/cozme sonrasi). Hat gecikmesi bundan olculur.
     std::optional<TargetOutput> step(const cv::Mat& img, uint64_t stamp_us, Detections* dets_out, AngleError* ang) {
         Stopwatch total;
+        // Kuresel hareket (CPU) ile TensorRT cikarimi (GPU) birbirinden bagimsiz: kestirim ayri
+        // is parcaciginda cikarimla ayni anda kosar; hat yalniz cikarimi asan kismi bekler.
+        std::future<std::optional<GlobalMotion>> motion;
+        if (gme)
+            motion = std::async(std::launch::async, [this, &img] {
+                cv::Mat gray;
+                cv::cvtColor(img, gray, cv::COLOR_BGR2GRAY);
+                return gme->update(gray, prev_boxes);
+            });
         Detections dets = det.detect(img, measure ? &stats : nullptr);
         Stopwatch sw;
+        if (gme) {
+            if (auto m = motion.get()) tracker.compensateCameraMotion(m->A);
+            prev_boxes.clear();
+            for (const auto& d : dets)
+                if (d.score >= 0.3f) prev_boxes.push_back(d.box);
+            if (measure) stats.add("kuresel_hareket_bekleme", sw.lap());
+        }
         tracker.update(dets);
         const auto t = tracker.target();
         if (measure) stats.add("takip", sw.lap());
@@ -127,11 +151,21 @@ struct Pipeline {
 
 int main(int argc, char** argv) try {
     const Args a(argc, argv);
+    // Kaynak paylasimi: OpenCV kendi havuzunda tum cekirdekleri kullanir; esanli kuresel hareket
+    // kestirimi GPU'yu besleyen ana is parcacigiyla yarisinca cikarim gecikmesi ikiye katlaniyordu.
+    cv::setNumThreads(a.i("cv-threads", 1));
+    // Bloklayan senkron: CPU, GPU'yu meshgul bekleyerek (spin) cekirdek tuketmez.
+    if (a.has("blocking-sync")) cudaSetDeviceFlags(cudaDeviceScheduleBlockingSync);
     TrtDetector det(a.required("engine"), a.f("conf", 0.01f));
     det.setStageSync(!a.has("no-stage-sync"));
     const CameraModel cam = CameraModel::fromHfov(640, 512, a.f("hfov", 30.f));
     Pipeline pipe(det, trackerParamsFromArgs(a), cam);
     pipe.lead_frames = a.f("lead-frames", 0.f);
+    if (a.has("cmc")) {
+        GlobalMotionParams gp;
+        gp.downscale = a.f("cmc-downscale", 0.5f);
+        pipe.gme = std::make_unique<GlobalMotionEstimator>(gp);
+    }
     if (a.has("udp")) {
         const std::string hp = a.str("udp");
         const auto colon = hp.rfind(':');
@@ -162,6 +196,8 @@ int main(int argc, char** argv) try {
             const std::string name = fs::path(seq_dir).filename().string();
             const int n = countFrames(seq_dir);
             pipe.tracker.reset();
+            if (pipe.gme) pipe.gme->reset();
+            pipe.prev_boxes.clear();
             TrackCsvWriter tw((fs::path(out_dir) / (name + ".csv")).string());
             std::unique_ptr<DetectionCsvWriter> dw;
             if (!dump.empty()) dw = std::make_unique<DetectionCsvWriter>((fs::path(dump) / (name + ".csv")).string());

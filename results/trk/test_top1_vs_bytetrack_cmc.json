@@ -1,0 +1,79 @@
+{
+  "pred": "results\\trk\\test_top1",
+  "split": "test",
+  "n_sequences": 120,
+  "n_frames": 129650,
+  "SA_mean_of_sequences": 0.6478,
+  "SA_frame_level": 0.6277,
+  "success_iou50_on_present": 0.7944,
+  "mean_iou_on_present": 0.6212,
+  "absent_frames": 2622,
+  "absent_correct_rate": 0.9416,
+  "output_rate_on_present": 0.8214,
+  "attributes": {
+    "TS": {
+      "n_frames": 30538,
+      "mean_iou": 0.5362
+    },
+    "FM": {
+      "n_frames": 14323,
+      "mean_iou": 0.4251
+    },
+    "DBC": {
+      "n_frames": 8609,
+      "mean_iou": 0.4501
+    },
+    "SV": {
+      "n_frames": 810,
+      "mean_iou": 0.6886
+    },
+    "OC": {
+      "n_frames": 707,
+      "mean_iou": 0.0063
+    }
+  },
+  "b": {
+    "pred": "results\\trk\\test_bytetrack_cmc",
+    "n_sequences": 120,
+    "n_frames": 129650,
+    "SA_mean_of_sequences": 0.678,
+    "SA_frame_level": 0.6636,
+    "success_iou50_on_present": 0.844,
+    "mean_iou_on_present": 0.6606,
+    "absent_frames": 2622,
+    "absent_correct_rate": 0.8085,
+    "output_rate_on_present": 0.9119,
+    "attributes": {
+      "TS": {
+        "n_frames": 30538,
+        "mean_iou": 0.6166
+      },
+      "FM": {
+        "n_frames": 14323,
+        "mean_iou": 0.4859
+      },
+      "DBC": {
+        "n_frames": 8609,
+        "mean_iou": 0.5428
+      },
+      "SV": {
+        "n_frames": 810,
+        "mean_iou": 0.7319
+      },
+      "OC": {
+        "n_frames": 707,
+        "mean_iou": 0.0167
+      }
+    }
+  },
+  "b_minus_a": {
+    "diff": 0.0302,
+    "ci95": [
+      0.0208,
+      0.0401
+    ],
+    "n_sequences": 120,
+    "b_better_in": 109,
+    "b_worse_in": 10
+  }
+}

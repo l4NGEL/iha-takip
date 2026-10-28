@@ -18,6 +18,7 @@ inline TrackerParams trackerParamsFromArgs(const Args& a) {
     p.max_lost = a.i("max-lost", p.max_lost);
     p.coast_output = a.i("coast", p.coast_output);
     p.lock_yields_to_measured = a.i("lock-yield", p.lock_yields_to_measured ? 1 : 0) != 0;
+    p.output_min_score = a.f("out-score", p.output_min_score);
     return p;
 }
 

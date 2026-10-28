@@ -35,10 +35,16 @@ void ByteTracker::reset() {
 }
 
 void ByteTracker::compensateCameraMotion(float dx, float dy) {
+    compensateCameraMotion(Affine2D::translation(dx, dy));
+}
+
+void ByteTracker::compensateCameraMotion(const Affine2D& A) {
+    const float s = A.scale();
     for (auto& t : tracks_) {
-        t.kf.shift(dx, dy);
-        t.last_det.x += dx;
-        t.last_det.y += dy;
+        t.kf.warp(A);
+        float cx, cy;
+        A.apply(t.last_det.cx(), t.last_det.cy(), cx, cy);
+        t.last_det = Box::fromCenter(cx, cy, t.last_det.w * s, t.last_det.h * s);
     }
 }
 
@@ -154,6 +160,7 @@ void ByteTracker::selectTarget() {
         return;
     }
     locked_id_ = best->id;
+    if (best->score < p_.output_min_score) return;
     TargetOutput o;
     o.track_id = best->id;
     o.measured = best->since_update == 0;

@@ -1,13 +1,13 @@
 {
   "rule": "en yuksek val SA (dizi ortalamasi); test bu secimden sonra bir kez kosulur",
   "selected": {
-    "name": "bt_h0.3_m1_c5 [--lock-yield 1]",
-    "flags": "--high-thr 0.3 --new-thr 0.400 --low-thr 0.1 --min-hits 1 --coast 5 --lock-yield 1",
-    "SA": 0.7263,
-    "SA_frame": 0.6956,
-    "mean_iou_present": 0.6911,
+    "name": "bt_h0.3_m1_c5 [--lock-yield 1 --out-score 0 --motion-dir results/trk/motion_val]",
+    "flags": "--high-thr 0.3 --new-thr 0.400 --low-thr 0.1 --min-hits 1 --coast 5 --lock-yield 1 --out-score 0 --motion-dir results/trk/motion_val",
+    "SA": 0.7269,
+    "SA_frame": 0.6963,
+    "mean_iou_present": 0.6919,
     "absent_correct": 0.8937,
-    "output_rate": 0.9056
+    "output_rate": 0.9059
   },
   "baseline_top1": {
     "name": "top1",
@@ -22,5 +22,21 @@
     "results/trk/tune_val_sticky_lock.json (ilk izgara; coast>0 satirlari yapiskan kilitle)",
     "results/trk/tune_val_yield.json (yol veren kilit)"
   ],
-  "note": "coast>0 yapiskan kilitte SA 0.50-0.63 (kilit parazitte kaliyordu); yol veren kilit ile 0.70-0.726"
+  "note": "coast>0 yapiskan kilitte SA 0.50-0.63 (kilit parazitte kaliyordu); yol veren kilit ile 0.70-0.726",
+  "previous_selected": {
+    "name": "bt_h0.3_m1_c5 [--lock-yield 1]",
+    "flags": "--high-thr 0.3 --new-thr 0.400 --low-thr 0.1 --min-hits 1 --coast 5 --lock-yield 1",
+    "SA": 0.7263,
+    "SA_frame": 0.6956,
+    "mean_iou_present": 0.6911,
+    "absent_correct": 0.8937,
+    "output_rate": 0.9056
+  },
+  "round2": {
+    "grids": [
+      "results/trk/tune_val_cmc{off,on}_s{0,0.4,0.5,0.6}.json"
+    ],
+    "note": "goruntuden CMC (motion_dump, downscale 0.5) genel val SA +0.0006; kamera hareketli 21 val dizisinde +0.0021 [0.0009, 0.0036], 16/21 iyi. Cikis skor kapisi SA dusuruyor (0.5: -0.012) ama hedefsiz karede dogru yok 0.89->0.96; varsayilan kapali.",
+    "test_use": "test bu secimle takip icin 2. kez kosuldu"
+  }
 }

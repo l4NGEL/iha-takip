@@ -6,12 +6,12 @@ on:
 
 jobs:
   core-cpp:
-    # GPU'suz cekirdek: takip, aci hatasi, PID, protokol, UDP; -Werror ile.
+    # GPU'suz cekirdek: takip, aci hatasi, PID, protokol, UDP, OpenCV kuresel hareket; -Werror ile.
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - name: Bagimliliklar
-        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends cmake ninja-build g++ libeigen3-dev libgtest-dev
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends cmake ninja-build g++ libeigen3-dev libgtest-dev libopencv-dev
       - name: Derle
         run: cmake -S cpp -B build -G Ninja -DIHA_WITH_TRT=OFF && cmake --build build
       - name: Test
@@ -24,7 +24,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Bagimliliklar
-        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends cmake ninja-build g++ libeigen3-dev libgtest-dev
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends cmake ninja-build g++ libeigen3-dev libgtest-dev libopencv-dev
       - name: ASan + UBSan
         run: |
           cmake -S cpp -B build -G Ninja -DIHA_WITH_TRT=OFF -DCMAKE_BUILD_TYPE=Debug \

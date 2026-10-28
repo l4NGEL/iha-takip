@@ -55,6 +55,25 @@ std::map<int, Detections> readDetectionsCsv(const std::string& path) {
     return out;
 }
 
+std::map<int, Affine2D> readMotionCsv(const std::string& path) {
+    std::ifstream is(path);
+    if (!is) throw std::runtime_error("acilamadi: " + path);
+    std::map<int, Affine2D> out;
+    std::string line;
+    std::getline(is, line);
+    while (std::getline(is, line)) {
+        if (line.empty()) continue;
+        std::replace(line.begin(), line.end(), ',', ' ');
+        std::istringstream ls(line);
+        int frame = 0, valid = 0;
+        Affine2D A;
+        if (!(ls >> frame >> valid >> A.a >> A.b >> A.tx >> A.c >> A.d >> A.ty))
+            throw std::runtime_error("bozuk satir: " + path);
+        if (valid) out[frame] = A;
+    }
+    return out;
+}
+
 DetectionCsvWriter::DetectionCsvWriter(const std::string& path) : os_(path) {
     if (!os_) throw std::runtime_error("yazilamadi: " + path);
     os_ << "frame,x,y,w,h,score\n";

@@ -1,0 +1,43 @@
+{
+  "split": "val",
+  "rule": "en yuksek val SA (dizi ortalamasi)",
+  "selected": {
+    "name": "bt_h0.3_m1_c5 [--lock-yield 1 --out-score 0.5]",
+    "flags": "--high-thr 0.3 --new-thr 0.400 --low-thr 0.1 --min-hits 1 --coast 5 --lock-yield 1 --out-score 0.5",
+    "SA": 0.7142,
+    "SA_frame": 0.6789,
+    "mean_iou_present": 0.6726,
+    "absent_correct": 0.9588,
+    "output_rate": 0.8561
+  },
+  "baseline_top1": null,
+  "all": [
+    {
+      "name": "bt_h0.3_m1_c5 [--lock-yield 1 --out-score 0.5]",
+      "flags": "--high-thr 0.3 --new-thr 0.400 --low-thr 0.1 --min-hits 1 --coast 5 --lock-yield 1 --out-score 0.5",
+      "SA": 0.7142,
+      "SA_frame": 0.6789,
+      "mean_iou_present": 0.6726,
+      "absent_correct": 0.9588,
+      "output_rate": 0.8561
+    },
+    {
+      "name": "bt_h0.3_m1_c15 [--lock-yield 1 --out-score 0.5]",
+      "flags": "--high-thr 0.3 --new-thr 0.400 --low-thr 0.1 --min-hits 1 --coast 15 --lock-yield 1 --out-score 0.5",
+      "SA": 0.7134,
+      "SA_frame": 0.6784,
+      "mean_iou_present": 0.6735,
+      "absent_correct": 0.8975,
+      "output_rate": 0.861
+    },
+    {
+      "name": "bt_h0.3_m1_c30 [--lock-yield 1 --out-score 0.5]",
+      "flags": "--high-thr 0.3 --new-thr 0.400 --low-thr 0.1 --min-hits 1 --coast 30 --lock-yield 1 --out-score 0.5",
+      "SA": 0.712,
+      "SA_frame": 0.6769,
+      "mean_iou_present": 0.6737,
+      "absent_correct": 0.8175,
+      "output_rate": 0.8645
+    }
+  ]
+}

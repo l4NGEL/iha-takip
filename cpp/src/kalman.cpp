@@ -57,6 +57,23 @@ void KalmanBoxFilter::update(const Box& meas) {
     P_ = IKH * P_ * IKH.transpose() + K * R * K.transpose();
 }
 
+void KalmanBoxFilter::warp(const Affine2D& A) {
+    const float s = A.scale();
+    Mat8 J = Mat8::Zero();
+    for (int base : {0, 4}) {  // konum ve hiz bloklari
+        J(base, base) = A.a;
+        J(base, base + 1) = A.b;
+        J(base + 1, base) = A.c;
+        J(base + 1, base + 1) = A.d;
+        J(base + 2, base + 2) = s;
+        J(base + 3, base + 3) = s;
+    }
+    x_ = J * x_;
+    x_(0) += A.tx;
+    x_(1) += A.ty;
+    P_ = J * P_ * J.transpose();
+}
+
 Box KalmanBoxFilter::box() const { return Box::fromCenter(x_(0), x_(1), x_(2), x_(3)); }
 
 float KalmanBoxFilter::centerMahalanobis2(const Box& meas) const {

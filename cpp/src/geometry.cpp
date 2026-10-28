@@ -1,6 +1,7 @@
 #include "iha/geometry.hpp"
 
 #include <algorithm>
+#include <cmath>
 
 namespace iha {
 
@@ -11,6 +12,8 @@ float iou(const Box& a, const Box& b) {
     const float uni = a.area() + b.area() - inter;
     return uni > 0.f ? inter / uni : 0.f;
 }
+
+float Affine2D::scale() const { return std::sqrt(std::abs(a * d - b * c)); }
 
 float diou(const Box& a, const Box& b) {
     const float dx = a.cx() - b.cx();

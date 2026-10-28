@@ -26,13 +26,14 @@ açı hatasına çeviren uçtan uca görüntü işleme hattı.
   videolarında eğitildi ve resmi train/val/test bölümüyle değerlendirildi.
 - **Çalışma zamanı hattı (C++17):** Python içermez. CUDA ön işleme, TensorRT, takip, açı hatası, UDP ve
   aşama aşama gecikme ölçümü bu katmanda.
-- **Çekirdek kütüphane:** Takip, açı hatası, PID, protokol ve UDP GPU olmadan derlenir. CI'da `-Werror`,
-  ASan ve UBSan ile 50 GoogleTest koşar.
+- **Çekirdek kütüphane:** Takip, açı hatası, PID, protokol, UDP ve optik akışla kamera hareketi kestirimi
+  GPU olmadan derlenir. CI'da `-Werror`, ASan ve UBSan ile 57 GoogleTest koşar.
 
 ## Sonuçlar
 
 Bütün sayılar, eğitimde ve ayar seçiminde hiç kullanılmamış **120 test dizisinden** gelir
-(129.691 kare). Eşikler ve takip ayarları önce val dizilerinde seçildi, test bir kez koşuldu.
+(129.691 kare). Eşikler ve takip ayarları önce val dizilerinde seçildi. Tespit testi bir kez koşuldu; takip testi ilk sürüm ve
+kamera telafili sürüm için iki kez koşuldu.
 Kaynak dosyalar `results/` altında.
 
 ### Tespit (YOLO26s-P2, eşik val'de seçildi: 0.415)
@@ -57,17 +58,24 @@ SA, kare başına şöyle hesaplanır:
 - **Hedef varsa:** tahmin kutusunun IoU'su.
 - **Hedef yoksa:** "yok" denmişse 1, aksi halde 0.
 
-| | Her karede en iyi tespit (takipsiz) | ByteTrack + Kalman (val'de seçildi) |
-|---|---|---|
-| SA (dizi ortalaması) | 0.648 | **0.677** |
-| Hedefli karede IoU ≥ 0.5 | 0.794 | 0.842 |
-| Küçük hedef (TS) ortalama IoU | 0.536 | 0.616 |
-| Hızlı hareket (FM) | 0.425 | 0.486 |
-| Karmaşık arka plan (DBC) | 0.450 | 0.543 |
-| Hedefsiz karede doğru "yok" | **0.942** | 0.809 |
+| | Her karede en iyi tespit (takipsiz) | ByteTrack + Kalman | + görüntüden kamera hareketi telafisi |
+|---|---|---|---|
+| SA (dizi ortalaması) | 0.648 | 0.677 | **0.678** |
+| Hedefli karede IoU ≥ 0.5 | 0.794 | 0.842 | 0.844 |
+| Küçük hedef (TS) ortalama IoU | 0.536 | 0.616 | 0.617 |
+| Hızlı hareket (FM) | 0.425 | 0.486 | 0.486 |
+| Karmaşık arka plan (DBC) | 0.450 | 0.543 | 0.543 |
+| Hedefsiz karede doğru "yok" | **0.942** | 0.809 | 0.809 |
 
-- **Kazanç:** Takip +0.029 SA [0.020, 0.039] getiriyor ve 120 dizinin 109'unda daha iyi.
-- **Bedel:** Drone yokken çıktı verme oranı artıyor.
+- **Kazanç:** Son sürüm takipsiz tabana göre +0.030 SA [0.021, 0.040] getiriyor ve 120 dizinin 109'unda daha iyi.
+- **Telafinin payı:** Görüntüden kamera hareketi telafisinin katkısı küçük ama tutarlı: +0.0012 [0.0007, 0.0018],
+  63 dizide iyi, 27'sinde kötü. Val'de kameranın gerçekten hareket ettiği 21 dizide +0.0021 [0.0009, 0.0036].
+  Seçilen ayar öngörüye az dayandığı için (en fazla 5 karelik sürdürme) çıktıyı büyük ölçüde tespit belirliyor.
+- **Test kullanımı:** Test kümesi takip için iki kez kullanıldı: ilk sürüm ve telafi eklenmiş son sürüm. Her iki
+  seçim de test görülmeden val'de yapıldı.
+- **Bedel:** Drone yokken çıktı verme oranı artıyor. `--out-score 0.5` ile hedefsiz karede doğru "yok" oranı
+  0.81'den 0.90'a çıkıyor, SA 0.678'den 0.648'e iniyor. SA ölçütü bu kapıyı seçmediği için varsayılan kapalı;
+  yanlış alarmın pahalı olduğu bir görevde açılacak bir ayar.
 - **Kıyas sınırı:** Anti-UAV410 tablosundaki SOT izleyicileri ilk karede gerçek kutuyla başlatılır. Bu hat hiçbir
   gerçek kutu almadığı için o tablolarla doğrudan karşılaştırılamaz.
 
@@ -75,13 +83,13 @@ SA, kare başına şöyle hesaplanır:
 
 | Aşama | p50 (ms) | p99 (ms) |
 |---|---|---|
-| Yükleme (sabitlenmiş bellek → GPU) | 0.28 | 0.46 |
-| CUDA ön işleme | 0.11 | 0.25 |
-| TensorRT çıkarım | 3.48 | 5.51 |
-| Son işleme | 0.08 | 0.16 |
-| Takip | 0.01 | 0.02 |
+| Yükleme (sabitlenmiş bellek → GPU) | 0.29 | 0.60 |
+| CUDA ön işleme | 0.11 | 0.45 |
+| TensorRT çıkarım | 3.54 | 5.82 |
+| Son işleme | 0.10 | 0.24 |
+| Takip | 0.01 | 0.03 |
 | Açı hatası + UDP | < 0.01 | < 0.01 |
-| **Uçtan uca (görüntüden mesaja)** | **3.97** | **6.11** |
+| **Uçtan uca (görüntüden mesaja)** | **4.08** | **6.57** |
 
 - **JPEG okuma:** Diskten okuma ve çözme bu tabloya dahil değil; ayrıca ölçüldü, p50 1.2 ms.
 - **Canlı akış:** GStreamer ile 30 fps beslenen bir dizi (994 kare) uçtan uca p50 8.7 ms, p99 18.5 ms verdi.
@@ -89,6 +97,11 @@ SA, kare başına şöyle hesaplanır:
   olası bir neden; doğrulanmadı.
 - **Kayıp:** 30 fps akışta 5 kare atıldı. UDP alıcısı 994 mesajın hepsini CRC'den geçirdi, sıra numarasında
   boşluk yok (`scripts/udp_listen.py`).
+- **Görüntüden kamera telafisinin bedeli (`--cmc`):** Optik akış CPU'da yarım çözünürlükte kare başına p50 4.3 ms,
+  p99 19 ms sürüyor. Çıkarımla eşzamanlı ayrı iş parçacığında koşsa da CPU'yu paylaştığı için hattı yavaşlatıyor.
+  Masaüstü yükü altında, dönüşümlü 3+3 koşuda uçtan uca p50 ~10.9 ms'den ~16.1 ms'ye, p99 ~31 ms'den ~49 ms'ye
+  çıktı (`results/latency_ab_*.json`). SA'ya katkısı +0.001 olduğu için canlı hatta varsayılan olarak kapalı;
+  gimbal enkoderi varsa telafi oradan hesapsız gelir.
 
 ### Doğruluk kontrolleri
 
@@ -106,11 +119,11 @@ Entropi kalibrasyonu yalnız train dizilerinden 500 kareyle yapıldı. Val sonu�
 | Recall (eşik 0.415) | 0.836 | 0.486 |
 | < 16 px recall | 0.519 | 0.005 |
 | Takip SA | 0.726 | 0.638 |
-| Uçtan uca gecikme p50 | 3.97 ms | 3.51 ms |
+| Uçtan uca p50, dönüşümlü 2+2 koşu, masaüstü yükü altında | 10.9 ms | 10.1 ms |
 
 - **Neden:** Doğru tespitlerin medyan skoru 0.82'den 0.43'e iniyor. Eşiği INT8 için val'de yeniden seçmek de
   F1'i 0.896'dan 0.854'e kadar düşürüyor.
-- **Karar:** Bu GPU'da %12'lik hız kazancı bu doğruluk kaybına değmiyor.
+- **Karar:** Bu GPU'da %8–12'lik hız kazancı (boşta ve yük altında) bu doğruluk kaybına değmiyor.
 - **Denenmeyenler:** P2 başlığını FP16'da bırakan karışık hassasiyet ve nicemlemeye duyarlı eğitim (QAT).
 
 ### Gimbal kapalı döngü (benzetim)
@@ -141,13 +154,21 @@ Tablodaki değerler RMS işaretleme hatası.
   Kilit bir parazite takılınca gerçek hedef o süre boyunca kaçırılıyordu. Kilit, aynı karede ölçülmüş başka bir
   onaylı takip varsa ona yol verecek şekilde değiştirildi; aynı ayarda SA 0.72'ye çıktı. Gimbal benzetimindeki
   ıraksamanın kaynağı da buydu.
-- **Kamera hareketi telafisinin tek başına etkisi görülmedi.** Gimbal döndükçe sahnenin görüntüdeki kaymasını
-  enkoder açısından hesaplayıp takipçiye veren bir telafi eklendi. Benzetimde telafili ve telafisiz takipçi aynı
-  düzeyde (1.45° ve 1.43°). Telafinin gerçek işlevi, "gecikme telafisi + ileri besleme" denetleyicisinin
-  kullandığı Kalman hızını hedefin dünya açısal hızına çevirmek.
+- **Kamera hareketi telafisinin etkisi küçük çıktı.** Benzetimde enkoderden gelen telafiyle takipçi, telafisiz
+  takipçiyle aynı düzeyde (1.45° ve 1.43°). Telafinin oradaki asıl işlevi, "gecikme telafisi + ileri besleme"
+  denetleyicisinin kullandığı Kalman hızını hedefin dünya açısal hızına çevirmek. Gerçek dizilerde görüntüden
+  kestirilen telafi SA'ya +0.001 ekliyor. Val dizilerinin çoğunda kamera sabit (kare arası medyan öteleme
+  0.01 px); 21 dizide ise kare başına 28 piksele varan pan var.
 - **Hızlı ve küçük hedefte yeni takip hiç onaylanmıyordu.** Yeni takibin hız belirsizliği boyuta oranla
   başlatıldığında 6 piksellik, karede 10 piksel giden bir hedefin ikinci karedeki tespiti kapı dışında kalıyordu.
   Başlangıç hız sapması ayrı bir parametre oldu (10 px/kare) ve birim testiyle kilitlendi.
+- **Girdi çözünürlüğünü büyütmek küçük hedefe yaramadı.** 640'ta eğitilen model 800 ve 960'ta çalıştırıldı.
+  Val'de 16 pikselden küçük hedeflerde AP50 0.573 / 0.575 / 0.572; 960'ta yanlış alarm %2.9'dan %9.1'e çıktı.
+  Sınır çözünürlükten gelmiyor gibi. Sonraki deneme zamansal bilgi olmalı: kare farkı ya da çok kareli girdi
+  ile yeniden eğitim.
+- **OpenCV iş parçacıkları GPU hattıyla çekişiyordu.** Telafi açıkken OpenCV'nin varsayılan havuzu bütün
+  çekirdekleri kullanıyor ve çıkarım gecikmesini uzatıyordu. Canlı hatta OpenCV tek iş parçacığına sınırlandı
+  (`--cv-threads`); CUDA'nın bloklayan senkronu (`--blocking-sync`) bu makinede daha kötü sonuç verdi.
 - **Takip ayarı:** Val'de en iyi sonuç `min_hits` = 1'de çıktı (onay beklemek SA'yı düşürdü). Takipsiz tabana
   göre kazancın büyük kısmı, düşük skorlu tespitlerin ikinci aşamada eşleşmesinden geliyor.
 
@@ -158,8 +179,11 @@ Tablodaki değerler RMS işaretleme hatası.
 - **Gimbal:** Gerçek bir gimbal yok; kapalı döngü sayıları benzetimden geliyor. Yaw ve pitch bağımsız kabul edildi.
 - **Kamera:** Anti-UAV kamera iç parametrelerini vermiyor. Açı hatası, 30°'lik varsayımsal yatay görüş açısıyla
   hesaplanıyor (`--hfov`); gerçek sistemde kalibrasyon sonucu kullanılmalı.
-- **Kamera hareketi telafisi:** Bu kaynak gimbal enkoderinden geliyor. Görüntüden küresel hareket kestirimi
-  (optik akış) ve görüntü stabilizasyonu yok.
+- **Kamera hareketi telafisi:** İki kaynak var. Gimbal enkoderi benzetimde, görüntüden optik akışla kestirim
+  (`iha_vision`, LK + RANSAC benzerlik dönüşümü) gerçek dizilerde kullanılıyor. Kestirim val karelerinin %99.5'inde
+  geçerli. Bu dönüşüm stabilizasyonun temeli, ama stabilize video çıktısı üretilmiyor.
+- **Gecikme ölçümleri:** Gecikme sayıları masaüstü yüküne duyarlı. Boşta alınan tablo ile yük altındaki
+  dönüşümlü A/B koşuları ayrı ayrı raporlanıyor.
 - **Akış kipindeki fark:** Zor bir dizide akış kipi (GStreamer `jpegdec`) 1000 karenin 244'ünde, veri kümesi
   kipi (OpenCV `imread`) 320'sinde hedef verdi. JPEG çözücü farkından şüpheleniliyor; doğrulanmadı.
 - **Veri lisansı:** Anti-UAV410 CC BY-NC 4.0 lisanslı. Veri bu depoda yok; aşağıdaki komutlarla indirilir.
@@ -186,6 +210,13 @@ cmake -S cpp -B build -DIHA_WITH_TRT=OFF && cmake --build build && ctest --test-
 ```
 
 `iha_track --source` bir video dosyası, RTSP adresi ya da `!` içeren bir GStreamer hattı alır.
+`--cmc` görüntüden kamera hareketi telafisini, `--out-score 0.5` yanlış alarmı azaltan çıkış kapısını açar.
+Takip ayarını çevrimdışı yeniden kurmak için:
+
+```bash
+scripts/docker_trt.sh "cpp/build-trt/motion_dump --root /data/antiuav410/val --out-dir results/trk/motion_val --dets-dir results/trk/dets_val_fp16 --downscale 0.5"
+python scripts/tune_tracker.py --dets results/trk/dets_val_fp16 --split val --out results/trk/tune.json --extra "--lock-yield 1 --motion-dir results/trk/motion_val"
+```
 
 ## Dizin
 
@@ -194,7 +225,8 @@ cmake -S cpp -B build -DIHA_WITH_TRT=OFF && cmake --build build && ctest --test-
 | `src/iha_takip/`, `scripts/` | Veri dönüştürme, eğitim, tespit ve takip değerlendirmesi, bootstrap, parite |
 | `cpp/include/iha/`, `cpp/src/` | Çekirdek: Kalman, Macar atama, ByteTrack, açı hatası, PID, gimbal ekseni, protokol, UDP |
 | `cpp/trt/` | CUDA letterbox kerneli, TensorRT dedektörü |
-| `cpp/apps/` | `iha_track` (canlı hat), `iha_track_offline`, `trt_build` (FP16/INT8), `gimbal_sim` |
+| `cpp/src_vision/` | Optik akışla küresel kamera hareketi kestirimi (OpenCV) |
+| `cpp/apps/` | `iha_track` (canlı hat), `iha_track_offline`, `motion_dump`, `trt_build` (FP16/INT8), `gimbal_sim` |
 | `results/` | Bütün sayıların JSON kaynakları |
 
 ## Atıf
